@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import VideoSection from '../../src/components/VideoSection';
 
 export default function HomePage() {
   return (
@@ -27,20 +28,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <div className="hero-video">
-          <div className="hero-video-inner">
-            <div className="hero-video-label">Live & recorded presentations</div>
-            <p>
-              This area is reserved for the official FARMSENSE video presentation. It supports MP4,
-              YouTube/Vimeo embeds and live broadcast (RTMP/HLS) for national programme launches and
-              investor briefings.
-            </p>
-            <div className="video-pill">
-              <span>▶</span>
-              <span>Play FARMSENSE introduction</span>
-            </div>
-          </div>
-        </div>
+        <VideoSection />
       </section>
 
       <section className="section">

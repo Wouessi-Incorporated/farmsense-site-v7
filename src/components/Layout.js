@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const NAV_ITEMS = {
   en: [
@@ -9,6 +10,7 @@ const NAV_ITEMS = {
     { href: '/en/products-kits', label: 'Products & Kits' },
     { href: '/en/government-programme', label: 'Government' },
     { href: '/en/technology-ai', label: 'Technology & AI' },
+    { href: 'https://farmsense.tech/whitepaper', label: 'White Paper', isExternal: true },
     { href: '/en/investors', label: 'Investors' },
     { href: '/en/contact', label: 'Contact' },
     { href: '/en/about', label: 'About' },
@@ -19,6 +21,7 @@ const NAV_ITEMS = {
     { href: '/fr/produits-kits', label: 'Produits & Kits' },
     { href: '/fr/programmes-gouvernementaux', label: 'Programmes Gouvernementaux' },
     { href: '/fr/technologie-ia', label: 'Technologie & IA' },
+    { href: 'https://farmsense.tech/whitepaper', label: 'Livre Blanc', isExternal: true },
     { href: '/fr/investisseurs', label: 'Investisseurs' },
     { href: '/fr/contact', label: 'Contact' },
     { href: '/fr/a-propos', label: 'À propos' },
@@ -27,9 +30,17 @@ const NAV_ITEMS = {
 
 export default function Layout({ children }) {
   const router = useRouter();
-  const isFr = router.pathname.startsWith('/fr');
-  const locale = isFr ? 'fr' : 'en';
-  const nav = NAV_ITEMS[locale];
+  // Default to 'en' if locale is not available yet
+  const [locale, setLocale] = useState(router.locale || 'en');
+
+  useEffect(() => {
+    if (router.locale) {
+      setLocale(router.locale);
+    }
+  }, [router.locale]);
+
+  // Ensure we always have a valid nav array, defaulting to English
+  const nav = NAV_ITEMS[locale] || NAV_ITEMS['en'];
 
   return (
     <>
@@ -53,16 +64,55 @@ export default function Layout({ children }) {
           </div>
           <nav className="main-nav">
             {nav.map((item) => (
-              <Link key={item.href} href={item.href} className="nav-link">
-                {item.label}
-              </Link>
+              item.isExternal ? (
+                <a 
+                  key={item.href} 
+                  href={item.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="nav-link"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link key={item.href} href={item.href} className="nav-link">
+                  {item.label}
+                </Link>
+              )
             ))}
+            <div className="language-switcher">
+              <button 
+                onClick={() => {
+                  const newLocale = locale === 'en' ? 'fr' : 'en';
+                  // Get the current path and replace the language prefix
+                  let newPath = router.asPath;
+                  if (newPath.startsWith('/en/') || newPath === '/en') {
+                    newPath = newPath.replace(/^\/en/, '/fr');
+                  } else if (newPath.startsWith('/fr/') || newPath === '/fr') {
+                    newPath = newPath.replace(/^\/fr/, '/en');
+                  } else {
+                    // If no language prefix is present, add the new one
+                    newPath = `/${newLocale}${newPath}`;
+                  }
+                  // Ensure we have a valid path
+                  if (newPath === '/') {
+                    newPath = `/${newLocale}`;
+                  }
+                  // Update the URL and refresh the page to ensure proper SSR
+                  window.location.href = newPath;
+                }}
+                className="language-button"
+                aria-label={locale === 'en' ? 'Switch to French' : 'Passer en anglais'}
+              >
+                {locale === 'en' ? 'FR' : 'EN'}
+              </button>
+            </div>
           </nav>
         </header>
         <main className="site-main">{children}</main>
         <footer className="site-footer">
           <div className="footer-left">
-            <p>© {new Date().getFullYear()} FARMSENSE™ — A registered trademark of Wouessi Inc.</p>
+            <p> {new Date().getFullYear()} FARMSENSE™ — A registered trademark of Wouessi Inc.</p>
             <p>
               {locale === 'fr'
                 ? 'FARMSENSE™ est une marque déposée de Wouessi Inc. Tous droits réservés.'

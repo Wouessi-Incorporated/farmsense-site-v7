@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import VideoSection from '../../src/components/VideoSection';
 
 export default function AccueilPage() {
   return (
@@ -27,20 +28,7 @@ export default function AccueilPage() {
             </Link>
           </div>
         </div>
-        <div className="hero-video">
-          <div className="hero-video-inner">
-            <div className="hero-video-label">Présentation & diffusion en direct</div>
-            <p>
-              Cette zone est réservée à la vidéo officielle de présentation FARMSENSE. Elle supporte les
-              vidéos MP4, les intégrations YouTube/Vimeo et les diffusions en direct pour les lancements
-              nationaux et les sessions avec les partenaires.
-            </p>
-            <div className="video-pill">
-              <span>▶</span>
-              <span>Lancer la vidéo FARMSENSE</span>
-            </div>
-          </div>
-        </div>
+        <VideoSection />
       </section>
 
       <section className="section">
