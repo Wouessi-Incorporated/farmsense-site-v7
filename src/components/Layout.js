@@ -22,7 +22,7 @@ const NAV_ITEMS = {
     { href: '/government-programme', label: 'Programmes Gouvernementaux' },
     { href: '/technology-ai', label: 'Technologie & IA' },
     { href: 'https://farmsense.tech/whitepaper', label: 'Livre Blanc', isExternal: true },
-    { href: '/investora', label: 'Investisseurs' },
+    { href: '/investors', label: 'Investisseurs' },
     { href: '/contact', label: 'Contact' },
     { href: '/about', label: 'À propos' },
   ],
