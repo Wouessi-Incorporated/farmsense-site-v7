@@ -5,42 +5,36 @@ import { useEffect, useState } from 'react';
 
 const NAV_ITEMS = {
   en: [
-    { href: '/en', label: 'Home' },
-    { href: '/en/farmers', label: 'Farmers' },
-    { href: '/en/products-kits', label: 'Products & Kits' },
-    { href: '/en/government-programme', label: 'Government' },
-    { href: '/en/technology-ai', label: 'Technology & AI' },
+    { href: '/', label: 'Home' },
+    { href: '/farmers', label: 'Farmers' },
+    { href: '/products-kits', label: 'Products & Kits' },
+    { href: '/government-programme', label: 'Government' },
+    { href: '/technology-ai', label: 'Technology & AI' },
     { href: 'https://farmsense.tech/whitepaper', label: 'White Paper', isExternal: true },
-    { href: '/en/investors', label: 'Investors' },
-    { href: '/en/contact', label: 'Contact' },
-    { href: '/en/about', label: 'About' },
+    { href: '/investors', label: 'Investors' },
+    { href: '/contact', label: 'Contact' },
+    { href: '/about', label: 'About' },
   ],
   fr: [
-    { href: '/fr', label: 'Accueil' },
-    { href: '/fr/eleveurs', label: 'Éleveurs' },
-    { href: '/fr/produits-kits', label: 'Produits & Kits' },
-    { href: '/fr/programmes-gouvernementaux', label: 'Programmes Gouvernementaux' },
-    { href: '/fr/technologie-ia', label: 'Technologie & IA' },
+    { href: '/', label: 'Accueil' },
+    { href: '/farmers', label: 'Éleveurs' },
+    { href: '/products-kits', label: 'Produits & Kits' },
+    { href: '/government-programme', label: 'Programmes Gouvernementaux' },
+    { href: '/technology-ai', label: 'Technologie & IA' },
     { href: 'https://farmsense.tech/whitepaper', label: 'Livre Blanc', isExternal: true },
-    { href: '/fr/investisseurs', label: 'Investisseurs' },
-    { href: '/fr/contact', label: 'Contact' },
-    { href: '/fr/a-propos', label: 'À propos' },
+    { href: '/investora', label: 'Investisseurs' },
+    { href: '/contact', label: 'Contact' },
+    { href: '/about', label: 'À propos' },
   ],
 };
 
 export default function Layout({ children }) {
   const router = useRouter();
-  // Default to 'en' if locale is not available yet
-  const [locale, setLocale] = useState(router.locale || 'en');
-
-  useEffect(() => {
-    if (router.locale) {
-      setLocale(router.locale);
-    }
-  }, [router.locale]);
+  
+  const locale = router.locale || 'en';
 
   // Ensure we always have a valid nav array, defaulting to English
-  const nav = NAV_ITEMS[locale] || NAV_ITEMS['en'];
+  const nav = NAV_ITEMS[locale] || NAV_ITEMS.en;
 
   return (
     <>
@@ -50,7 +44,7 @@ export default function Layout({ children }) {
       <div className="site">
         <header className="site-header">
           <div className="logo-block">
-            <Link href={locale === 'fr' ? '/fr' : '/en'} className="logo-link">
+            <Link href="/" locale = {locale} className="logo-link">
               <img src="/images/farmsense-logo.png" alt="FARMSENSE logo" className="logo-img" />
               <div className="logo-text">
                 <span className="logo-title">FARMSENSE™</span>
@@ -75,8 +69,8 @@ export default function Layout({ children }) {
                   {item.label}
                 </a>
               ) : (
-                <Link key={item.href} href={item.href} className="nav-link">
-                  {item.label}
+                <Link key={item.href}locale={locale} href={item.href} className="nav-link">
+                  {item.label} 
                 </Link>
               )
             ))}
@@ -84,22 +78,8 @@ export default function Layout({ children }) {
               <button 
                 onClick={() => {
                   const newLocale = locale === 'en' ? 'fr' : 'en';
-                  // Get the current path and replace the language prefix
-                  let newPath = router.asPath;
-                  if (newPath.startsWith('/en/') || newPath === '/en') {
-                    newPath = newPath.replace(/^\/en/, '/fr');
-                  } else if (newPath.startsWith('/fr/') || newPath === '/fr') {
-                    newPath = newPath.replace(/^\/fr/, '/en');
-                  } else {
-                    // If no language prefix is present, add the new one
-                    newPath = `/${newLocale}${newPath}`;
-                  }
-                  // Ensure we have a valid path
-                  if (newPath === '/') {
-                    newPath = `/${newLocale}`;
-                  }
-                  // Update the URL and refresh the page to ensure proper SSR
-                  window.location.href = newPath;
+                  router.push(router.asPath, router.asPath, {locale: newLocale });
+              
                 }}
                 className="language-button"
                 aria-label={locale === 'en' ? 'Switch to French' : 'Passer en anglais'}
