@@ -1,82 +1,91 @@
 import { useRouter } from 'next/router';
-
+import {useEffect} from 'react';
 const VideoSection = () => {
   const router = useRouter();
   const isFr = router.locale === 'fr';
 
-  const videoContent = {
-    en: {
-      label: 'Live & recorded presentations',
-      description: 'This area is reserved for the official FARMSENSE video presentation. It supports MP4, YouTube/Vimeo embeds and live broadcast (RTMP/HLS) for national programme launches and investor briefings.',
-      playText: 'Play FARMSENSE introduction'
-    },
-    fr: {
-      label: 'Présentation & diffusion en direct',
-      description: 'Cette zone est réservée à la vidéo officielle de présentation FARMSENSE. Elle supporte les vidéos MP4, les intégrations YouTube/Vimeo et les diffusions en direct pour les lancements nationaux et les sessions avec les partenaires.',
-      playText: 'Lancer la vidéo FARMSENSE'
-    }
-  };
+  console.log("isFr is " + isFr);
+  /*
+    const videoContent = {
+      en: {
+        label: 'Live & recorded presentations',
+        description: 'This area is reserved for the official FARMSENSE video presentation. It supports MP4, YouTube/Vimeo embeds and live broadcast (RTMP/HLS) for national programme launches and investor briefings.',
+        playText: 'Play FARMSENSE introduction'
+      },
+      fr: {
+        label: 'Présentation & diffusion en direct',
+        description: 'Cette zone est réservée à la vidéo officielle de présentation FARMSENSE. Elle supporte les vidéos MP4, les intégrations YouTube/Vimeo et les diffusions en direct pour les lancements nationaux et les sessions avec les partenaires.',
+        playText: 'Lancer la vidéo FARMSENSE'
+      }
+    };
+  
+  
+    const content = videoContent[router.locale] || videoContent.en;
+   */
 
-  const content = videoContent[router.locale] || videoContent.en;
-
+    
   return (
     <div className="hero-video">
       <div className="hero-video-inner">
-        <div className="hero-video-label">{content.label}</div>
-        <p>{content.description}</p>
         <div className="video-placeholder">
           {isFr ? (
             // French video placeholder - replace with actual video embed code
             <div className="video-container">
-              <div className="video-overlay">
-                <div className="play-button">▶</div>
-                <p>Vidéo en français</p>
-              </div>
-              <img 
-                src="/images/video-placeholder-fr.jpg" 
-                alt="FARMSENSE vidéo de présentation en français"
-                className="video-thumbnail"
-              />
+              <video
+                
+                controls preload="none"
+                poster="/images/farmsense-video-thumbnail.jpg"
+                title="FarmSense Video In English"
+              
+              >
+                <source src="/images/farmsense-video-fr.mp4"
+                  type="video/mp4"
+
+                />
+                Your browser does not support the video tag.
+              </video>
             </div>
           ) : (
             // English video placeholder - replace with actual video embed code
             <div className="video-container">
-              <div className="video-overlay">
-                <div className="play-button">▶</div>
-                <p>English video</p>
-              </div>
-              <img 
-                src="/images/video-placeholder-en.jpg" 
-                alt="FARMSENSE video presentation in English"
-                className="video-thumbnail"
-              />
+              <video
+                key={isFr}
+                controls preload="none"
+                poster="/images/farmsense-video-thumbnail.jpg"
+                title="FarmSense Video In English"
+              
+              >
+                <source src="/images/farmsense-video-en.mp4"
+                  type="video/mp4"
+
+                />
+                Your browser does not support the video tag.
+              </video>
             </div>
+
+
           )}
-          <div className="video-pill">
-            <span>▶</span>
-            <span>{content.playText}</span>
-          </div>
         </div>
       </div>
       <style jsx>{`
-        .video-placeholder {
-          margin-top: 1.5rem;
-          text-align: center;
-        }
+       
         .video-container {
-          position: relative;
-          width: 100%;
+          
           max-width: 800px;
-          margin: 0 auto 1rem;
-          border-radius: 8px;
+          border-radius:8px;
           overflow: hidden;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .video-thumbnail {
+
+        .video-container video{
           width: 100%;
-          height: auto;
-          display: block;
+          height:auto;
+          display:block;
+          border-radius:8px;
+          
+
         }
+       
         .video-overlay {
           position: absolute;
           top: 0;
@@ -92,11 +101,7 @@ const VideoSection = () => {
           text-align: center;
           padding: 1rem;
         }
-        .play-button {
-          font-size: 3rem;
-          margin-bottom: 1rem;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
+       
         .video-pill {
           display: inline-flex;
           align-items: center;
@@ -112,6 +117,8 @@ const VideoSection = () => {
           background: #e2e8f0;
           transform: translateY(-1px);
         }
+
+        
         .video-pill span:first-child {
           margin-right: 0.5rem;
         }
