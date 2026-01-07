@@ -101,16 +101,16 @@ export default function Layout({ children }) {
           </div>
           <div className="footer-right">
             <span>{locale === 'fr' ? 'Suivez-nous :' : 'Follow us:'}</span>
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="footer-link">
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-link">
               LinkedIn
             </a>
-            <a href="https://www.youtube.com" target="_blank" rel="noreferrer" className="footer-link">
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" className="footer-link">
               YouTube
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="footer-link">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-link">
               X/Twitter
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="footer-link">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-link">
               Facebook
             </a>
           </div>
@@ -121,7 +121,7 @@ export default function Layout({ children }) {
           href="https://wa.me/10000000000"
           className="whatsapp-float"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           WA
         </a>
